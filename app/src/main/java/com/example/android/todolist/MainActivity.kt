@@ -20,22 +20,27 @@ import android.database.Cursor
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.todolist.data.Task
 import com.example.android.todolist.data.TaskContract
 import com.example.android.todolist.data.TaskViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
+
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val tasksVM: TaskViewModel by viewModels()
+    //private val tasksVM: TaskViewModel by AndroidViewModel( application )
+
+    lateinit var tasksVM: TaskViewModel
+
+        //ViewModelProviders.of(this)[TaskViewModel::class.java]
+
 
     private var mAdapter: CustomCursorAdapter? = null
     private var mRecyclerView: RecyclerView? = null
@@ -83,10 +88,14 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
         supportLoaderManager.initLoader(TASK_LOADER_ID, null, this)
 
+        tasksVM = ViewModelProvider.AndroidViewModelFactory(application!!)
+            .create(TaskViewModel::class.java)
+
+        /*
         tasksVM.taskList.value = listOf(
             Task(1,"124",1),
             Task(2,"2567",3))
-
+        */
 
         tasksVM.taskList.observe(  this, {
             Log.i("INFO","task list changed")
@@ -113,3 +122,6 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
 }
+
+
+
