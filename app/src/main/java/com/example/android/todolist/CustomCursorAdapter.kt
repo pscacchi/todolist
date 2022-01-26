@@ -16,20 +16,19 @@
 package com.example.android.todolist
 
 import android.content.Context
-import android.database.Cursor
 import android.graphics.drawable.GradientDrawable
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.todolist.CustomCursorAdapter.TaskViewHolder
-import com.example.android.todolist.data.TaskContract
+import com.example.android.todolist.data.Task
 
 class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<TaskViewHolder>() {
 
-    private var mCursor: Cursor? = null
+    private var mTasks: List<Task>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(mContext)
@@ -40,23 +39,19 @@ class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 
         // Indices for the _id, description, and priority columns
-        val idIndex = mCursor!!.getColumnIndex(TaskContract.TaskEntry._ID)
-        val descriptionIndex = mCursor!!.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION)
-        val priorityIndex = mCursor!!.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY)
-        mCursor!!.moveToPosition(position) // get to the right location in the cursor
-
-        // Determine the values of the wanted data
-        val id = mCursor!!.getInt(idIndex)
-        val description = mCursor!!.getString(descriptionIndex)
-        val priority = mCursor!!.getInt(priorityIndex)
-
+        /*
+         val idIndex = mTasks!!.getColumnIndex(TaskContract.TaskEntry._ID)
+         val descriptionIndex = mTasks!!.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION)
+         val priorityIndex = mTasks!!.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY)
+         mTasks!!.moveToPosition(position) // get to the right location in the cursor
+        */
         //Set values
-        holder.itemView.tag = id
-        holder.taskDescriptionView.text = description
-        holder.priorityView.text = priority.toString()
+        holder.itemView.tag = mTasks!![position].id
+        holder.taskDescriptionView.text = mTasks!![position].description
+        holder.priorityView.text = mTasks!![position].priority.toString()
 
         val priorityCircle = holder.priorityView.background as GradientDrawable
-         priorityCircle.setColor(getPriorityColor(priority))
+        priorityCircle.setColor(getPriorityColor(mTasks!![position].priority))
     }
 
     /*
@@ -75,17 +70,17 @@ class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<
     }
 
     override fun getItemCount(): Int {
-        return if (mCursor == null) {
+        return if (mTasks == null) {
             0
-        } else mCursor!!.count
+        } else mTasks!!.size
     }
 
-    fun swapCursor(c: Cursor?): Cursor? {
-        if (mCursor === c) {
+    fun swapCursor(c: List<Task>?): List<Task>? {
+        if (mTasks === c) {
             return null
         }
-        val temp = mCursor
-        mCursor = c
+        val temp = mTasks
+        mTasks = c
 
         if (c != null) {
             notifyDataSetChanged()

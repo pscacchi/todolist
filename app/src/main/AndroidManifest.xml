@@ -12,7 +12,9 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <!-- The manifest entry for the MainActivity -->
-        <activity android:name="com.example.android.todolist.MainActivity">
+
+        <activity android:name="com.example.android.todolist.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,14 +22,10 @@
             </intent-filter>
         </activity>
 
-        <!-- AddTaskActivity -->
         <activity
             android:name="com.example.android.todolist.AddTaskActivity"
             android:label="@string/add_task_activity_name" />
 
-        <!-- Register the TaskContentProvider -->
-        <!-- Set name, authorities, and exported attributes -->
-        <!-- exported = false limits access to this ContentProvider to only this app -->
         <provider
             android:name="com.example.android.todolist.data.TaskContentProvider"
             android:authorities="com.example.android.todolist"

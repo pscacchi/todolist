@@ -47,7 +47,7 @@ class TaskContentProvider : ContentProvider() {
         return true
     }
 
-    override fun insert(uri: Uri, values: ContentValues): Uri {
+    override fun insert(uri: Uri, values: ContentValues?): Uri {
         val db = mTaskDbHelper!!.writableDatabase
 
         val returnUri: Uri = when (sUriMatcher.match(uri)) {
@@ -61,14 +61,14 @@ class TaskContentProvider : ContentProvider() {
             }
             else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }
-        context.contentResolver.notifyChange(uri, null)
+        context!!.contentResolver.notifyChange(uri, null)
 
         return returnUri
     }
 
     override fun query(
-        uri: Uri, projection: Array<String>, selection: String,
-        selectionArgs: Array<String>, sortOrder: String
+        uri: Uri, projection: Array<String>?, selection: String?,
+        selectionArgs: Array<String>?, sortOrder: String?
     ): Cursor {
 
         val db = mTaskDbHelper!!.readableDatabase
@@ -79,12 +79,12 @@ class TaskContentProvider : ContentProvider() {
             else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }
 
-        retCursor.setNotificationUri(context.contentResolver, uri)
+        retCursor.setNotificationUri(context!!.contentResolver, uri)
 
         return retCursor
     }
 
-    override fun delete(uri: Uri, selection: String, selectionArgs: Array<String>): Int {
+    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
 
         val db = mTaskDbHelper!!.writableDatabase
         val tasksDeleted: Int = when (sUriMatcher.match(uri)) {
@@ -95,15 +95,15 @@ class TaskContentProvider : ContentProvider() {
             else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }
         if (tasksDeleted != 0) {
-            context.contentResolver.notifyChange(uri, null)
+            context!!.contentResolver.notifyChange(uri, null)
         }
 
         return tasksDeleted
     }
 
     override fun update(
-        uri: Uri, values: ContentValues, selection: String,
-        selectionArgs: Array<String>
+        uri: Uri, values: ContentValues?, selection: String?,
+        selectionArgs: Array<String>?
     ): Int {
         throw UnsupportedOperationException("Not yet implemented")
     }

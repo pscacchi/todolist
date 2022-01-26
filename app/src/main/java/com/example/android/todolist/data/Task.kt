@@ -1,14 +1,15 @@
 package com.example.android.todolist.data
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-data class Task( val id: Int, val description: String, val priority: String )
+data class Task( val id: Int, val description: String, val priority: Int )
 
 class TaskViewModel : ViewModel() {
-    private val taskList = MutableLiveData<List<Task>>()
+    val taskList = MutableLiveData<List<Task>>()
 
     fun update(newTaskList: List<Task>) {
         this.taskList.value = newTaskList
     }
+
 }

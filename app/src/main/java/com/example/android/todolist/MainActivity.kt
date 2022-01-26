@@ -18,25 +18,27 @@ package com.example.android.todolist
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.CursorLoader
-import android.support.v4.content.Loader
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.android.todolist.data.Task
 import com.example.android.todolist.data.TaskContract
 import com.example.android.todolist.data.TaskViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val model: TaskViewModel by viewModels()
-
+    private val tasksVM: TaskViewModel by viewModels()
 
     private var mAdapter: CustomCursorAdapter? = null
-    var mRecyclerView: RecyclerView? = null
+    private var mRecyclerView: RecyclerView? = null
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -48,7 +50,8 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         setContentView(R.layout.activity_main)
         mRecyclerView = findViewById<View>(R.id.recyclerViewTasks) as RecyclerView
         mRecyclerView!!.layoutManager = LinearLayoutManager(this)
-        mRecyclerView!!.adapter = CustomCursorAdapter(this)
+        mAdapter = CustomCursorAdapter(this)
+        mRecyclerView!!.adapter = mAdapter
         ItemTouchHelper(object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -79,6 +82,16 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         }
 
         supportLoaderManager.initLoader(TASK_LOADER_ID, null, this)
+
+        tasksVM.taskList.value = listOf(
+            Task(1,"124",1),
+            Task(2,"2567",3))
+
+
+        tasksVM.taskList.observe(  this, {
+            Log.i("INFO","task list changed")
+            mAdapter!!.swapCursor(tasksVM.taskList.value)
+        })
     }
 
     override fun onResume() {
@@ -92,11 +105,11 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
-        mAdapter!!.swapCursor(data)
+        //mAdapter!!.swapCursor(data)
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
-        mAdapter!!.swapCursor(null)
+        //mAdapter!!.swapCursor(null)
     }
 
 }

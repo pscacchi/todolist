@@ -17,11 +17,11 @@ package com.example.android.todolist
 
 import android.content.ContentValues
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.android.todolist.data.TaskContract
 
 class AddTaskActivity : AppCompatActivity() {
