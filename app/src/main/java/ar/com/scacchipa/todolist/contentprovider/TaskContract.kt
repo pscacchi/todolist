@@ -20,7 +20,7 @@ import android.provider.BaseColumns
 
 object TaskContract {
 
-    const val AUTHORITY = "com.example.android.todolist"
+    const val AUTHORITY = "ar.com.scacchipa.todolist"
     val BASE_CONTENT_URI: Uri = Uri.parse("content://$AUTHORITY")
     const val PATH_TASKS = "tasks"
 

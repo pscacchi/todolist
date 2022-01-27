@@ -28,7 +28,7 @@
 
         <provider
             android:name="ar.com.scacchipa.todolist.contentprovider.TaskContentProvider"
-            android:authorities="com.example.android.todolist"
+            android:authorities="ar.com.scacchipa.todolist"
             android:exported="false"/>
 
     </application>
