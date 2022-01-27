@@ -16,4 +16,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun update(newTaskList: List<Task>) {
         this.taskList.value = newTaskList
     }
+
+    suspend fun update() {
+        taskList.value = myTaskRepository.fetchTasks()
+    }
 }

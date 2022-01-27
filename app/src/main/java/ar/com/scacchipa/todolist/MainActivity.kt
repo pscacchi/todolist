@@ -26,6 +26,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ar.com.scacchipa.todolist.contentprovider.TaskContract
 import ar.com.scacchipa.todolist.data.TaskViewModel
 import com.example.android.todolist.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private var mAdapter: CustomCursorAdapter? = null
-    private var mRecyclerView: RecyclerView? = null
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -65,6 +67,8 @@ class MainActivity : AppCompatActivity() {
                     .buildUpon().appendPath(stringId).build()
 
                 contentResolver.delete(uri, null, null)
+                CoroutineScope(Dispatchers.Main).launch { tasksVM.update() }
+
             }
         }).attachToRecyclerView(binding.recyclerViewTasks)
 
