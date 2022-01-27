@@ -13,12 +13,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.todolist.data
+package ar.com.scacchipa.todolist.contentprovider
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.android.todolist.data.TaskContract.TaskEntry
+import ar.com.scacchipa.todolist.contentprovider.TaskContract.TaskEntry
 
 class TaskDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
@@ -39,5 +39,4 @@ class TaskDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
         db.execSQL("DROP TABLE IF EXISTS " + TaskEntry.TABLE_NAME)
         onCreate(db)
     }
-
 }

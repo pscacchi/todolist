@@ -1,4 +1,4 @@
-package com.example.android.todolist.data
+package ar.com.scacchipa.todolist.data
 
 import android.content.ContentResolver
 import kotlinx.coroutines.Dispatchers

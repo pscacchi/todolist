@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.todolist.data
+package ar.com.scacchipa.todolist.contentprovider
 
 import android.content.ContentProvider
 import android.content.ContentUris
@@ -22,7 +22,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.SQLException
 import android.net.Uri
-import com.example.android.todolist.data.TaskContract.TaskEntry
+import ar.com.scacchipa.todolist.contentprovider.TaskContract.TaskEntry
 
 class TaskContentProvider : ContentProvider() {
     private var mTaskDbHelper: TaskDbHelper? = null

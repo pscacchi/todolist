@@ -1,6 +1,7 @@
-package com.example.android.todolist.data
+package ar.com.scacchipa.todolist.data
 
 import android.content.ContentResolver
+import ar.com.scacchipa.todolist.contentprovider.TaskContract
 
 class TaskDataSource(
     private val contentResolver: ContentResolver
@@ -8,8 +9,10 @@ class TaskDataSource(
     fun fetchTasks() :List<Task> {
         val result = mutableListOf<Task>()
 
-        val cursor = contentResolver.query(TaskContract.TaskEntry.CONTENT_URI, null,
-            null , null, TaskContract.TaskEntry.COLUMN_PRIORITY)
+        val cursor = contentResolver.query(
+            TaskContract.TaskEntry.CONTENT_URI, null,
+            null , null, TaskContract.TaskEntry.COLUMN_PRIORITY
+        )
 
         cursor?.let {
             it.moveToFirst()

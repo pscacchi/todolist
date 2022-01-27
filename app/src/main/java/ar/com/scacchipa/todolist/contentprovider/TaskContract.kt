@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.todolist.data
+package ar.com.scacchipa.todolist.contentprovider
 
 import android.net.Uri
 import android.provider.BaseColumns

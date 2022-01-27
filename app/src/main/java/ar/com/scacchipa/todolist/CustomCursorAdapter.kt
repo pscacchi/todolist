@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.todolist
+package ar.com.scacchipa.todolist
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -23,8 +23,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.todolist.CustomCursorAdapter.TaskViewHolder
-import com.example.android.todolist.data.Task
+import ar.com.scacchipa.todolist.CustomCursorAdapter.TaskViewHolder
+import ar.com.scacchipa.todolist.data.Task
+import com.example.android.todolist.R
 
 class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<TaskViewHolder>() {
 
@@ -38,14 +39,6 @@ class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 
-        // Indices for the _id, description, and priority columns
-        /*
-         val idIndex = mTasks!!.getColumnIndex(TaskContract.TaskEntry._ID)
-         val descriptionIndex = mTasks!!.getColumnIndex(TaskContract.TaskEntry.COLUMN_DESCRIPTION)
-         val priorityIndex = mTasks!!.getColumnIndex(TaskContract.TaskEntry.COLUMN_PRIORITY)
-         mTasks!!.moveToPosition(position) // get to the right location in the cursor
-        */
-        //Set values
         holder.itemView.tag = mTasks!![position].id
         holder.taskDescriptionView.text = mTasks!![position].description
         holder.priorityView.text = mTasks!![position].priority.toString()

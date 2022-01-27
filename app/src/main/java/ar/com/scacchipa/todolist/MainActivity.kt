@@ -13,34 +13,25 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.todolist
+package ar.com.scacchipa.todolist
 
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
-import androidx.loader.content.Loader
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.todolist.data.TaskContract
-import com.example.android.todolist.data.TaskViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import ar.com.scacchipa.todolist.contentprovider.TaskContract
+import ar.com.scacchipa.todolist.data.TaskViewModel
+import com.example.android.todolist.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
-
-    //private val tasksVM: TaskViewModel by AndroidViewModel( application )
+class MainActivity : AppCompatActivity() {
 
     lateinit var tasksVM: TaskViewModel
-
-        //ViewModelProviders.of(this)[TaskViewModel::class.java]
-
+    private lateinit var binding: ActivityMainBinding
 
     private var mAdapter: CustomCursorAdapter? = null
     private var mRecyclerView: RecyclerView? = null
@@ -52,18 +43,17 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        mRecyclerView = findViewById<View>(R.id.recyclerViewTasks) as RecyclerView
-        mRecyclerView!!.layoutManager = LinearLayoutManager(this)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
         mAdapter = CustomCursorAdapter(this)
-        mRecyclerView!!.adapter = mAdapter
+        binding.recyclerViewTasks.adapter = mAdapter
+
         ItemTouchHelper(object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                                target: RecyclerView.ViewHolder): Boolean {
                 return false
             }
 
@@ -72,56 +62,23 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
                 val id = viewHolder.itemView.tag as Int
                 val stringId = id.toString()
                 var uri = TaskContract.TaskEntry.CONTENT_URI
-                uri = uri.buildUpon().appendPath(stringId).build()
+                    .buildUpon().appendPath(stringId).build()
 
                 contentResolver.delete(uri, null, null)
-
-                supportLoaderManager.restartLoader(TASK_LOADER_ID, null, this@MainActivity)
             }
-        }).attachToRecyclerView(mRecyclerView)
+        }).attachToRecyclerView(binding.recyclerViewTasks)
 
-        val fabButton = findViewById<View>(R.id.fab) as FloatingActionButton
-        fabButton.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
             val addTaskIntent = Intent(baseContext, AddTaskActivity::class.java)
             startActivity(addTaskIntent)
         }
 
-        supportLoaderManager.initLoader(TASK_LOADER_ID, null, this)
-
         tasksVM = ViewModelProvider.AndroidViewModelFactory(application!!)
             .create(TaskViewModel::class.java)
-
-        /*
-        tasksVM.taskList.value = listOf(
-            Task(1,"124",1),
-            Task(2,"2567",3))
-        */
 
         tasksVM.taskList.observe(  this, {
             Log.i("INFO","task list changed")
             mAdapter!!.swapCursor(tasksVM.taskList.value)
         })
     }
-
-    override fun onResume() {
-        super.onResume()
-        supportLoaderManager.restartLoader(TASK_LOADER_ID, null, this)
-    }
-
-    override fun onCreateLoader(id: Int, loaderArgs: Bundle?): Loader<Cursor?> {
-        return CursorLoader(this, TaskContract.TaskEntry.CONTENT_URI,
-            null,null , null, TaskContract.TaskEntry.COLUMN_PRIORITY);
-    }
-
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
-        //mAdapter!!.swapCursor(data)
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-        //mAdapter!!.swapCursor(null)
-    }
-
 }
-
-
-

@@ -13,32 +13,33 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.todolist
+package ar.com.scacchipa.todolist
 
 import android.content.ContentValues
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.android.todolist.data.TaskContract
+import ar.com.scacchipa.todolist.contentprovider.TaskContract
+import com.example.android.todolist.databinding.ActivityAddTaskBinding
 
 class AddTaskActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityAddTaskBinding
     private var mPriority = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_task)
+        binding = ActivityAddTaskBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        (findViewById<View>(R.id.radButton1) as RadioButton).isChecked = true
+        binding.radButton1.isChecked = true
         mPriority = 1
     }
 
-
     fun onClickAddTask(view: View?) {
 
-        val input = (findViewById<View>(R.id.editTextTaskDescription) as EditText).text.toString()
+        val input = binding.editTextTaskDescription.text.toString()
         if (input.isEmpty()) {
             return
         }
@@ -50,24 +51,18 @@ class AddTaskActivity : AppCompatActivity() {
 
         val uri = contentResolver.insert(TaskContract.TaskEntry.CONTENT_URI, contentValues)
 
-
         if (uri != null) {
             Toast.makeText(baseContext, uri.toString(), Toast.LENGTH_LONG).show()
         }
 
-
         finish()
     }
 
-    /**
-     * onPrioritySelected is called whenever a priority button is clicked.
-     * It changes the value of mPriority based on the selected button.
-     */
     fun onPrioritySelected(view: View?) {
         when {
-            (findViewById<View>(R.id.radButton1) as RadioButton).isChecked -> mPriority = 1
-            (findViewById<View>(R.id.radButton2) as RadioButton).isChecked -> mPriority = 2
-            (findViewById<View>(R.id.radButton3) as RadioButton).isChecked -> mPriority = 3
+            binding.radButton1.isChecked -> mPriority = 1
+            binding.radButton2.isChecked -> mPriority = 2
+            binding.radButton3.isChecked -> mPriority = 3
         }
     }
 }

@@ -13,7 +13,7 @@
 
         <!-- The manifest entry for the MainActivity -->
 
-        <activity android:name="com.example.android.todolist.MainActivity"
+        <activity android:name="ar.com.scacchipa.todolist.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +23,11 @@
         </activity>
 
         <activity
-            android:name="com.example.android.todolist.AddTaskActivity"
+            android:name="ar.com.scacchipa.todolist.AddTaskActivity"
             android:label="@string/add_task_activity_name" />
 
         <provider
-            android:name="com.example.android.todolist.data.TaskContentProvider"
+            android:name="ar.com.scacchipa.todolist.contentprovider.TaskContentProvider"
             android:authorities="com.example.android.todolist"
             android:exported="false"/>
 
