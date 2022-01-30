@@ -68,17 +68,9 @@ class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<
         } else mTasks!!.size
     }
 
-    fun swapCursor(c: List<Task>?): List<Task>? {
-        if (mTasks === c) {
-            return null
-        }
-        val temp = mTasks
-        mTasks = c
-
-        if (c != null) {
-            notifyDataSetChanged()
-        }
-        return temp
+    fun swapCursor(tasks: List<Task>?) {
+        mTasks = tasks
+        notifyDataSetChanged()
     }
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

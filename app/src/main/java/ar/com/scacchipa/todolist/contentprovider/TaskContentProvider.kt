@@ -24,6 +24,15 @@ import android.database.SQLException
 import android.net.Uri
 import ar.com.scacchipa.todolist.contentprovider.TaskContract.TaskEntry
 
+
+interface ITaskContentProvider {
+    fun insert(uri: Uri, values: ContentValues?): Uri
+    fun query(uri: Uri, projection: Array<String>?, selection: String?,
+        selectionArgs: Array<String>?, sortOrder: String?
+    ): Cursor
+    fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int
+}
+
 class TaskContentProvider : ContentProvider() {
     private var mTaskDbHelper: TaskDbHelper? = null
 

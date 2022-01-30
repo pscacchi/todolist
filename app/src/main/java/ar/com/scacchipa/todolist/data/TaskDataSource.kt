@@ -1,6 +1,7 @@
 package ar.com.scacchipa.todolist.data
 
 import android.content.ContentResolver
+import android.content.ContentValues
 import ar.com.scacchipa.todolist.contentprovider.TaskContract
 
 class TaskDataSource(
@@ -32,5 +33,21 @@ class TaskDataSource(
             cursor.close()
         }
         return result.toList()
+    }
+
+    fun insert(title: String, priority: Int) {
+        val contentValues = ContentValues()
+
+        contentValues.put(TaskContract.TaskEntry.COLUMN_DESCRIPTION, title)
+        contentValues.put(TaskContract.TaskEntry.COLUMN_PRIORITY, priority)
+
+        val uri = contentResolver.insert(TaskContract.TaskEntry.CONTENT_URI, contentValues)
+
+    }
+    fun delete(pos: Int) {
+        val uri = TaskContract.TaskEntry.CONTENT_URI
+            .buildUpon().appendPath(pos.toString()).build()
+
+        contentResolver.delete(uri, null, null)
     }
 }
