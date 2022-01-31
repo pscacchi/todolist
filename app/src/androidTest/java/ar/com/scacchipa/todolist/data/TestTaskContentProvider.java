@@ -39,9 +39,9 @@ import static junit.framework.Assert.fail;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import ar.com.scacchipa.todolist.contentprovider.TaskContentProvider;
-import ar.com.scacchipa.todolist.contentprovider.TaskContract;
-import ar.com.scacchipa.todolist.contentprovider.TaskDbHelper;
+import ar.com.scacchipa.todolist.manager.contentprovider.TaskContentProvider;
+import ar.com.scacchipa.todolist.manager.contentprovider.TaskContract;
+import ar.com.scacchipa.todolist.manager.contentprovider.TaskDbHelper;
 
 @RunWith(AndroidJUnit4.class)
 public class TestTaskContentProvider {

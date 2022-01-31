@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.android.todolist">
-
+    package="ar.com.scacchipa.todolist.manager">
+    <permission android:name="ar.com.scacchipa.todolist.manager.PERMISSION"/>
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -13,7 +13,7 @@
 
         <!-- The manifest entry for the MainActivity -->
 
-        <activity android:name="ar.com.scacchipa.todolist.MainActivity"
+        <activity android:name="ar.com.scacchipa.todolist.manager.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,15 +22,11 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="ar.com.scacchipa.todolist.AddTaskFragment"
-            android:label="@string/add_task_activity_name" />
-
         <provider
-            android:name="ar.com.scacchipa.todolist.contentprovider.TaskContentProvider"
-            android:authorities="ar.com.scacchipa.todolist"
-            android:exported="false"/>
-
+            android:name="ar.com.scacchipa.todolist.manager.contentprovider.TaskContentProvider"
+            android:authorities="ar.com.scacchipa.todolist.manager"
+            android:exported="true"
+            android:enabled="true"
+            android:permission="ar.com.scacchipa.todolist.manager.PERMISSION"/>
     </application>
-
 </manifest>
