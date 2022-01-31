@@ -1,4 +1,4 @@
-package ar.com.scacchipa.todolist.manager
+package ar.com.scacchipa.todolist.manager.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ar.com.scacchipa.todolist.manager.data.IFragManager
-import ar.com.scacchipa.todolist.manager.data.TaskViewModel
+import ar.com.scacchipa.mylibrary.IFragManager
+import ar.com.scacchipa.mylibrary.data.CustomCursorAdapter
+import ar.com.scacchipa.mylibrary.data.TaskViewModel
 import ar.com.scacchipa.todolist.manager.databinding.TaskListBinding
 
 class TaskListFragment(

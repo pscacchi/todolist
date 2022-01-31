@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package ar.com.scacchipa.todolist.manager
+package ar.com.scacchipa.mylibrary.data
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -23,10 +23,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import ar.com.scacchipa.todolist.manager.CustomCursorAdapter.TaskViewHolder
-import ar.com.scacchipa.todolist.manager.data.Task
+import ar.com.scacchipa.mylibrary.R
 
-class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<TaskViewHolder>() {
+class CustomCursorAdapter(private val mContext: Context) : RecyclerView.Adapter<CustomCursorAdapter.TaskViewHolder>() {
 
     private var mTasks: List<Task>? = null
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.com.scacchipa.myclient.databinding.TaskListBinding
 import ar.com.scacchipa.mylibrary.IFragManager
+import ar.com.scacchipa.mylibrary.data.CustomCursorAdapter
 import ar.com.scacchipa.mylibrary.data.TaskViewModel
 
 class TaskListFragment(

@@ -13,15 +13,15 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package ar.com.scacchipa.todolist.manager
+package ar.com.scacchipa.todolist.manager.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ar.com.scacchipa.todolist.manager.data.IFragManager
-import ar.com.scacchipa.todolist.manager.data.TaskViewModel
+import ar.com.scacchipa.mylibrary.IFragManager
+import ar.com.scacchipa.mylibrary.data.TaskViewModel
 import ar.com.scacchipa.todolist.manager.databinding.ActivityAddTaskBinding
 
 class AddTaskFragment(

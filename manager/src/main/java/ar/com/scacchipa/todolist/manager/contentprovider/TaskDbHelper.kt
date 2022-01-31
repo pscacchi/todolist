@@ -18,7 +18,7 @@ package ar.com.scacchipa.todolist.manager.contentprovider
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import ar.com.scacchipa.todolist.manager.contentprovider.TaskContract.TaskEntry
+import ar.com.scacchipa.mylibrary.contentprovider.TaskContract
 
 class TaskDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
@@ -28,15 +28,15 @@ class TaskDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,
 
     override fun onCreate(db: SQLiteDatabase) {
 
-        val CREATE_TABLE = "CREATE TABLE " + TaskEntry.TABLE_NAME + " (" +
-                TaskEntry._ID + " INTEGER PRIMARY KEY, " +
-                TaskEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                TaskEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);"
+        val CREATE_TABLE = "CREATE TABLE " + TaskContract.TaskEntry.TABLE_NAME + " (" +
+                TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY, " +
+                TaskContract.TaskEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                TaskContract.TaskEntry.COLUMN_PRIORITY + " INTEGER NOT NULL);"
         db.execSQL(CREATE_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS " + TaskEntry.TABLE_NAME)
+        db.execSQL("DROP TABLE IF EXISTS " + TaskContract.TaskEntry.TABLE_NAME)
         onCreate(db)
     }
 }

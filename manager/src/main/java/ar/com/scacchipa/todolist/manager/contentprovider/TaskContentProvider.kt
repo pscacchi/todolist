@@ -22,16 +22,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.SQLException
 import android.net.Uri
-import ar.com.scacchipa.todolist.manager.contentprovider.TaskContract.TaskEntry
-
-
-interface ITaskContentProvider {
-    fun insert(uri: Uri, values: ContentValues?): Uri
-    fun query(uri: Uri, projection: Array<String>?, selection: String?,
-        selectionArgs: Array<String>?, sortOrder: String?
-    ): Cursor
-    fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int
-}
+import ar.com.scacchipa.mylibrary.contentprovider.TaskContract
 
 class TaskContentProvider : ContentProvider() {
     private var mTaskDbHelper: TaskDbHelper? = null
@@ -61,9 +52,9 @@ class TaskContentProvider : ContentProvider() {
 
         val returnUri: Uri = when (sUriMatcher.match(uri)) {
             TASKS -> {
-                val id = db.insert(TaskEntry.TABLE_NAME, null, values)
+                val id = db.insert(TaskContract.TaskEntry.TABLE_NAME, null, values)
                 if (id > 0) {
-                    ContentUris.withAppendedId(TaskEntry.CONTENT_URI, id)
+                    ContentUris.withAppendedId(TaskContract.TaskEntry.CONTENT_URI, id)
                 } else {
                     throw SQLException("Failed to insert row into $uri")
                 }
@@ -83,7 +74,7 @@ class TaskContentProvider : ContentProvider() {
         val db = mTaskDbHelper!!.readableDatabase
 
         val retCursor: Cursor = when (sUriMatcher.match(uri)) {
-            TASKS -> db.query(TaskEntry.TABLE_NAME, projection, selection, selectionArgs,
+            TASKS -> db.query(TaskContract.TaskEntry.TABLE_NAME, projection, selection, selectionArgs,
                 null, null, sortOrder)
             else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }
@@ -99,7 +90,7 @@ class TaskContentProvider : ContentProvider() {
         val tasksDeleted: Int = when (sUriMatcher.match(uri)) {
             TASK_WITH_ID -> {
                 val id = uri.pathSegments[1]
-                db.delete(TaskEntry.TABLE_NAME, "_id=?", arrayOf(id))
+                db.delete(TaskContract.TaskEntry.TABLE_NAME, "_id=?", arrayOf(id))
             }
             else -> throw UnsupportedOperationException("Unknown uri: $uri")
         }

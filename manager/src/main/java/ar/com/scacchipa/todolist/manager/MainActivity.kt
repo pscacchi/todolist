@@ -18,9 +18,11 @@ package ar.com.scacchipa.todolist.manager
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import ar.com.scacchipa.todolist.manager.data.IFragManager
-import ar.com.scacchipa.todolist.manager.data.TaskViewModel
+import ar.com.scacchipa.mylibrary.IFragManager
+import ar.com.scacchipa.mylibrary.data.TaskViewModel
 import ar.com.scacchipa.todolist.manager.databinding.ActivityMainBinding
+import ar.com.scacchipa.todolist.manager.fragment.AddTaskFragment
+import ar.com.scacchipa.todolist.manager.fragment.TaskListFragment
 
 class MainActivity : FragmentActivity(), IFragManager {
 
