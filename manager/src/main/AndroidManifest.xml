@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ar.com.scacchipa.todolist.manager">
+    <permission android:name="ar.com.scacchipa.todolist.manager.PERMISSION"/>
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <!-- The manifest entry for the MainActivity -->
+
+        <activity android:name="ar.com.scacchipa.todolist.manager.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="ar.com.scacchipa.todolist.manager.contentprovider.TaskContentProvider"
+            android:authorities="ar.com.scacchipa.todolist.manager"
+            android:exported="true"
+            android:enabled="true"
+            android:permission="ar.com.scacchipa.todolist.manager.PERMISSION"/>
+    </application>
+</manifest>
