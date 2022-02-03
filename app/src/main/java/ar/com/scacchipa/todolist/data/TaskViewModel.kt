@@ -1,36 +1,55 @@
 package ar.com.scacchipa.todolist.data
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TaskViewModel(val app: Application) : AndroidViewModel(app) {
+class TaskViewModel : ViewModel() {
 
-    private val myTaskRepository = TaskRepository(app.contentResolver)
+    var app: Application? = null
+        set(value) {
+            field = value
+            if (app != null) {
+                myTaskRepository = TaskRepository(app!!.contentResolver)
+                update()
+            }
+        }
 
-    val taskList = liveData { emit(myTaskRepository.fetchTasks()) }
-            as MutableLiveData<List<Task>>
+    private var myTaskRepository:TaskRepository? = null
 
-    fun update(newTaskList: List<Task>) {
-        this.taskList.value = newTaskList
-    }
+    val taskListModel = MutableLiveData<List<Task>>()
+
     fun update() {
-        CoroutineScope(Dispatchers.Main).launch {
-            taskList.value = myTaskRepository.fetchTasks()
+        CoroutineScope(Dispatchers.IO).launch {
+            if (myTaskRepository != null) {
+                val taskList: List<Task> = myTaskRepository!!.fetchTasks()
+                launch(Dispatchers.Main) {
+                    taskListModel.value = taskList
+                }
+            }
         }
     }
     fun insert(title: String, priority: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            taskList.value = myTaskRepository.insert(title, priority)
+        CoroutineScope(Dispatchers.IO).launch {
+            if (myTaskRepository != null) {
+                val taskList: List<Task> = myTaskRepository!!.insert(title, priority)
+                launch(Dispatchers.Main) {
+                    taskListModel.value = taskList
+                }
+            }
         }
     }
     fun delete(pos: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            taskList.value = myTaskRepository.delete(pos)
+        CoroutineScope(Dispatchers.IO).launch {
+            if (myTaskRepository != null) {
+                val taskList = myTaskRepository!!.delete(pos)
+                launch(Dispatchers.Main) {
+                    taskListModel.value = taskList
+                }
+            }
         }
     }
 }

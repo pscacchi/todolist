@@ -16,18 +16,18 @@
 package ar.com.scacchipa.todolist
 
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import ar.com.scacchipa.todolist.data.IFragManager
 import ar.com.scacchipa.todolist.data.TaskViewModel
 import com.example.android.todolist.R
 import com.example.android.todolist.databinding.ActivityMainBinding
 
 
-class MainActivity : FragmentActivity(), IFragManager {
+class MainActivity : AppCompatActivity(), IFragManager {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var tasksVM: TaskViewModel
+    private val tasksVM: TaskViewModel by viewModels()
     private lateinit var taskListFragment: TaskListFragment
     private lateinit var addTaskFragment: AddTaskFragment
 
@@ -37,11 +37,11 @@ class MainActivity : FragmentActivity(), IFragManager {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        tasksVM.app = application
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        tasksVM = ViewModelProvider.AndroidViewModelFactory(application!!).create(TaskViewModel::class.java)
         this.initFragments()
 
     }
@@ -51,8 +51,8 @@ class MainActivity : FragmentActivity(), IFragManager {
      */
 
     override fun initFragments() {
-        taskListFragment = TaskListFragment(tasksVM, this)
-        addTaskFragment = AddTaskFragment(tasksVM, this)
+        taskListFragment = TaskListFragment()
+        addTaskFragment = AddTaskFragment()
 
         supportFragmentManager
             .beginTransaction()

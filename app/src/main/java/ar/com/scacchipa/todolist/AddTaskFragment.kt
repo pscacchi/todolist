@@ -15,20 +15,29 @@
 */
 package ar.com.scacchipa.todolist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import ar.com.scacchipa.todolist.data.IFragManager
 import ar.com.scacchipa.todolist.data.TaskViewModel
 import com.example.android.todolist.databinding.ActivityAddTaskBinding
 
-class AddTaskFragment(
-    private val tasksVM: TaskViewModel,
-    private val callback: IFragManager) : Fragment() {
+class AddTaskFragment() : Fragment() {
 
+    private val tasksVM: TaskViewModel by activityViewModels()
     private lateinit var binding: ActivityAddTaskBinding
+    private var delegate: IFragManager? = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is IFragManager) {
+            delegate = context
+        }
+        // delegate = context as? IFragment
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +65,8 @@ class AddTaskFragment(
             else -> 1
         }
 
-        tasksVM.insert(input, priority);
+        tasksVM.insert(input, priority)
 
-        callback.showListFragment()
+        delegate?.showListFragment()
     }
 }
