@@ -15,28 +15,21 @@
 */
 package ar.com.scacchipa.todolist
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import ar.com.scacchipa.todolist.contentprovider.TaskContract
+import ar.com.scacchipa.todolist.data.IFragManager
 import ar.com.scacchipa.todolist.data.TaskViewModel
+import com.example.android.todolist.R
 import com.example.android.todolist.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IFragManager {
 
-    lateinit var tasksVM: TaskViewModel
     private lateinit var binding: ActivityMainBinding
-
-    private var mAdapter: CustomCursorAdapter? = null
+    private val tasksVM: TaskViewModel by viewModels()
+    private lateinit var taskListFragment: TaskListFragment
+    private lateinit var addTaskFragment: AddTaskFragment
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -44,45 +37,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        tasksVM.app = application
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerViewTasks.layoutManager = LinearLayoutManager(this)
-        mAdapter = CustomCursorAdapter(this)
-        binding.recyclerViewTasks.adapter = mAdapter
+        this.initFragments()
 
-        ItemTouchHelper(object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
-                                target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
+    }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+    /**
+     * IFragFragment implementation
+     */
 
-                val id = viewHolder.itemView.tag as Int
-                val stringId = id.toString()
-                var uri = TaskContract.TaskEntry.CONTENT_URI
-                    .buildUpon().appendPath(stringId).build()
+    override fun initFragments() {
+        taskListFragment = TaskListFragment()
+        addTaskFragment = AddTaskFragment()
 
-                contentResolver.delete(uri, null, null)
-                CoroutineScope(Dispatchers.Main).launch { tasksVM.update() }
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, taskListFragment)
+            .commit()
+    }
 
-            }
-        }).attachToRecyclerView(binding.recyclerViewTasks)
+    override fun showListFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, taskListFragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
-        binding.floatingActionButton.setOnClickListener {
-            val addTaskIntent = Intent(baseContext, AddTaskActivity::class.java)
-            startActivity(addTaskIntent)
-        }
-
-        tasksVM = ViewModelProvider.AndroidViewModelFactory(application!!)
-            .create(TaskViewModel::class.java)
-
-        tasksVM.taskList.observe(  this, {
-            Log.i("INFO","task list changed")
-            mAdapter!!.swapCursor(tasksVM.taskList.value)
-        })
+    override fun showAddingFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, addTaskFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

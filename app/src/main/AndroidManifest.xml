@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name="ar.com.scacchipa.todolist.AddTaskActivity"
+            android:name="ar.com.scacchipa.todolist.AddTaskFragment"
             android:label="@string/add_task_activity_name" />
 
         <provider
